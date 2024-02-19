@@ -1,3 +1,5 @@
 /.env
 /.vscode
 /rocket_launch_env
+__pycache__/
+*.py[cod]
