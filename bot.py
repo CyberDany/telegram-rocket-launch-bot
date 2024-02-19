@@ -61,6 +61,10 @@ logger = logging.getLogger(__name__)
 
 
 def initialize_user_data(context):
+    """
+    Clears and initializes user data at the start of each conversation.
+    This function resets the user's progress and ensures a fresh start.
+    """
     context.user_data.clear()
     context.user_data["current_range"] = INITIAL_IMAGES_RANGE.copy()
     context.user_data["current_frame"] = 0
@@ -99,7 +103,10 @@ def set_current_frame_path(context, image_path):
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Start the conversation and ask user for input."""
+    """
+    Start the conversation and ask user for input.
+    """
+    
     logger.info(f"[User: {update.effective_chat.id}] Conversation started with user.")
 
     await update.message.reply_text(START_MESSAGE,reply_markup=initial_markup)
@@ -108,7 +115,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 
 async def show_first_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    
+    """
+    Displays the first image to the user by calculating the midpoint of the initial image range.
+    This function is the starting point for the image search process, allowing users to identify the launch frame.
+    """
+     
     client = VideoAPIClient(VIDEO_API_BASE_URL)
     chat_id = get_chat_id(context)
     images_range = get_range(context)
@@ -133,7 +144,11 @@ async def show_first_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -
 
 
 async def search_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    
+    """
+    Processes user responses to narrow down the search for the launch frame.
+    Depending on the user's answer, it updates the search range and shows the next image.
+    """
+     
     client = VideoAPIClient(VIDEO_API_BASE_URL)
     
     chat_id = get_chat_id(context)
@@ -170,6 +185,11 @@ async def search_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
 
 
 async def solution(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """
+    Displays the solution frame to the user, marking the end of the search process.
+    This function is called when the search range is narrowed down to the exact launch frame.
+    """
+
     logger.info(f"[User: {update.effective_chat.id}] Displaying solution to user.")
 
     chat_id = get_chat_id(context)
@@ -184,6 +204,10 @@ async def solution(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 
 async def abort(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """
+    Handles the user's request to abort the conversation, ending the interaction gracefully.
+    """
+
     logger.info(f"[User: {update.effective_chat.id}] User aborted the conversation.")
 
     await update.message.reply_text(ABORT_MESSAGE,reply_markup=ReplyKeyboardRemove())
@@ -192,16 +216,21 @@ async def abort(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 
 async def restart(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """
+    Allows the user to restart the conversation, resetting any progress and starting the process over.
+    """
     logger.info(f"[User: {update.effective_chat.id}] User restarted the conversation.")
 
-    """Restart the conversation and clear user data."""
     initialize_user_data(context)
     await update.message.reply_text(RESTART_MESSAGE)
     return await start(update, context)
 
 
 def main() -> None:
-    """Run the bot."""
+    """
+    Run the bot.
+    """
+
     # Create the Application and pass it your bot's token.
     application = Application.builder().token(TELEGRAM_TOKEN).build()
 

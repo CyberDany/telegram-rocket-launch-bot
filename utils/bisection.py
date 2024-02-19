@@ -3,7 +3,9 @@ from typing import List, Tuple
 class Bisection:
     @staticmethod
     def calculate_mid_point(range: List) -> int:
-        """Calculates the midpoint of the given range."""
+        """
+        Calculates the midpoint of the given range.
+        """
         range_start = range[0]
         range_end = range[1]
         return (range_start + range_end) // 2
