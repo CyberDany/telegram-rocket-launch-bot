@@ -245,6 +245,7 @@ def main() -> None:
                 MessageHandler(
                     filters.Regex("^Abort$"), abort
                 ),
+                CommandHandler("start", start),
             ],
             SEARCHING: [
                 MessageHandler(
@@ -256,6 +257,7 @@ def main() -> None:
                 MessageHandler(
                     filters.Regex("^Restart$"), restart
                 ),
+                CommandHandler("start", start),
             ]
         },
         fallbacks=[MessageHandler(filters.Regex("^Done$"), abort)],
