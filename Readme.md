@@ -48,12 +48,20 @@ Interact with the public bot by clicking the following link to Telegram: [Link t
 Here are some usage examples on different platforms:
 
 <p align="center">
-  <img src="/screenshots/MobileAppKeyboard.jpg" alt="Mobile example" width="300"/>
+  <img src="/screenshots/MobileAppKeyboard.jpg" alt="Mobile example" width="300"/><br>
+  <em>Example of the bot in the mobile app</em>
 </p>
 
-- Mobile example: ![Mobile example](/screenshots/MobileAppKeyboard.jpg)
-- Desktop app example: ![Desktop example](/screenshots/DesktopAppKeyboard.png)
-- Browser example: ![Browser example](/screenshots/WebAppKeyboard.png)
+<p align="center">
+  <img src="/screenshots/DesktopAppKeyboard.png" alt="Desktop example" width="300"/><br>
+  <em>Example of the bot in the Desktop app</em>
+</p>
+
+<p align="center">
+  <img src="/screenshots/WebAppKeyboard.png" alt="Browser example" width="300"/><br>
+  <em>Example of the bot in the Browser</em>
+</p>
+
 
 ## Maintainability
 
