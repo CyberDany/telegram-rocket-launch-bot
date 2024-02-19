@@ -62,35 +62,47 @@ def initialize_user_data(context):
     context.user_data["current_range"] = INITIAL_IMAGES_RANGE.copy()
     context.user_data["current_frame"] = 0
 
+
 def get_chat_id(context):
     return context._chat_id
-    
+
+ 
 def get_user_response(update):
     return update.message.text
+
 
 def get_range(context):
     return context.user_data["current_range"]
 
+
 def set_range(context, new_range):
     context.user_data["current_range"] = new_range
+
 
 def get_current_frame(context):
     return context.user_data["current_frame"]
 
+
 def set_current_frame(context, frame_idx):
     context.user_data["current_frame"] = frame_idx
+
 
 def get_current_frame_path(context):
     return context.user_data["current_frame_path"]
 
+
 def set_current_frame_path(context, image_path):
     context.user_data["current_frame_path"] = image_path
 
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Start the conversation and ask user for input."""
+    logger.info(f"[User: {update.effective_chat.id}] Conversation started with user.")
+
     await update.message.reply_text(START_MESSAGE,reply_markup=initial_markup)
     initialize_user_data(context)
     return INITIAL
+
 
 async def show_first_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     
@@ -106,6 +118,7 @@ async def show_first_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     image_path = ImagesUtils.save_image_and_get_path(chat_id, frame_data)
     set_current_frame_path(context, image_path)
     
+    logger.info(f"[User: {update.effective_chat.id}] Showing the first image to user. Frame idx: {image_idx}.")
     await TelegramUtils.send_image(TELEGRAM_TOKEN, chat_id, image_path)
 
     await update.message.reply_text(
@@ -114,6 +127,7 @@ async def show_first_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     )
 
     return SEARCHING
+
 
 async def search_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     
@@ -139,6 +153,7 @@ async def search_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
     image_path = ImagesUtils.save_image_and_get_path(chat_id, frame_data)
     set_current_frame_path(context, image_path)
     
+    logger.info(f"[User: {update.effective_chat.id}] Showing image to user. Frame idx: {current_frame}.")
     await TelegramUtils.send_image(TELEGRAM_TOKEN, chat_id, image_path)
 
     await update.message.reply_text(
@@ -146,10 +161,14 @@ async def search_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
         reply_markup=markup,
     )
 
+    logger.info(f"[User: {update.effective_chat.id}] User responded: {get_user_response(update)}.")
+
     return SEARCHING
 
+
 async def solution(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    
+    logger.info(f"[User: {update.effective_chat.id}] Displaying solution to user.")
+
     chat_id = get_chat_id(context)
     filename = get_current_frame_path(context)
     current_frame = get_current_frame(context)
@@ -162,12 +181,16 @@ async def solution(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 
 async def abort(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    logger.info(f"[User: {update.effective_chat.id}] User aborted the conversation.")
+
     await update.message.reply_text(ABORT_MESSAGE,reply_markup=ReplyKeyboardRemove())
     initialize_user_data(context)
     return ConversationHandler.END
 
 
 async def restart(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    logger.info(f"[User: {update.effective_chat.id}] User restarted the conversation.")
+
     """Restart the conversation and clear user data."""
     initialize_user_data(context)
     await update.message.reply_text(RESTART_MESSAGE)
