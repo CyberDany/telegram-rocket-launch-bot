@@ -18,6 +18,8 @@ Before using this bot, create one using Telegram's BotFather to obtain an API to
 
 <pre><code>TELEGRAM_TOKEN=your_api_token_here</code></pre>
 
+**Python**: The bot is developed in Python, so you need Python installed. This project is tested with Python 3.12. You can download the latest Python version from [python.org](https://www.python.org/downloads/).
+
 
 ## Installation and Setup
 
@@ -25,19 +27,32 @@ To install and set up RocketLaunchBot, execute the following steps:
 
 1. Clone the repository:
 
-<pre><code>git clone https://github.com/CyberDany/telegram-rocket-launch-bot.git</code></pre>
+  <pre><code>git clone https://github.com/CyberDany/telegram-rocket-launch-bot.git</code></pre>
 
 2. Navigate to the project directory and create a virtual environment:
 
-<pre><code>cd RocketLaunchBot
+  Linux: 
+  
+<pre><code>cd telegram-rocket-launch-bot
 python3 -m venv venv
-source venv/bin/activate</code></pre>
+source venv/Scripts/activate</code></pre>
+
+  Windows:
+
+<pre><code>cd telegram-rocket-launch-bot
+python3 -m venv venv
+.\venv\Scripts\activate</code></pre>
+
 
 3. Install the required dependencies:
 
 <pre><code>pip install -r requirements.txt</code></pre>
 
-4. Run the bot:
+4. Remember to create the .env file with the following content:
+
+<pre><code>TELEGRAM_TOKEN=your_api_token_here</code></pre>
+
+5. Run the bot:
 
 <pre><code>python bot.py</code></pre>
 
