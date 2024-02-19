@@ -105,14 +105,14 @@ If the user presses Restart, it restarts from the beginning as shown in the foll
 
 <p align="center">
   <img src="/screenshots/example04.png" alt="example" width="300"/><br>
-  <em>Abort</em>
+  <em>Restart</em>
 </p>
 
 At the end of the search process, the final result is displayed as follows
 
 <p align="center">
   <img src="/screenshots/example05.png" alt="example" width="300"/><br>
-  <em>Abort</em>
+  <em>Result</em>
 </p>
 
 
