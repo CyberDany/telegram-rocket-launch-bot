@@ -47,19 +47,72 @@ Interact with the public bot by clicking the following link to Telegram: [Link t
 
 Here are some usage examples on different platforms:
 
+In the mobile view the keyboard with the user's options are displayed immediately without the need to press the keyboard button.
+
 <p align="center">
   <img src="/screenshots/MobileAppKeyboard.jpg" alt="Mobile example" width="300"/><br>
   <em>Example of the bot in the mobile app</em>
 </p>
+
+In the same way, in the desktop application the keyboard will appear with the options that the user has available at that moment. 
 
 <p align="center">
   <img src="/screenshots/DesktopAppKeyboard.png" alt="Desktop example" width="300"/><br>
   <em>Example of the bot in the Desktop app</em>
 </p>
 
+In the case of the Web browser, it is necessary to click on the button at the bottom to display the options to the user.
+
 <p align="center">
   <img src="/screenshots/WebAppKeyboard.png" alt="Browser example" width="300"/><br>
   <em>Example of the bot in the Browser</em>
+</p>
+
+## Implementation Summary
+
+The RocketLaunchBot's logic operates as a finite state machine, utilizing specific states to guide the user through the frame identification process.
+
+- **INITIAL State**: The bot awaits user input, specifically looking for the commands 'Ready' to proceed with the image search or 'Abort' to end the session.
+- **SEARCHING State**: In this state, the bot engages with the user to determine if the rocket has launched. It presents images and awaits a 'Yes' or 'No' response. If the user responds 'Abort', the session is terminated.
+- **SOLUTION State**: Once the correct frame is identified, the bot transitions to the solution state, where it presents the conclusive image showing the rocket launch.
+
+User inputs such as 'Ready', 'Yes', 'No', 'Abort', and 'Restart' are integral to navigating through these states, ensuring a dynamic yet structured interaction flow.
+
+## Example of use
+
+After pressing /start, the Initial State is switched to Initial State. Here the user has two options available, 'Ready' and 'Abort'.
+
+<p align="center">
+  <img src="/screenshots/example01.png" alt="example" width="300"/><br>
+  <em>INITIAL State</em>
+</p>
+
+After pressing Ready, the Searching State starts. It will start showing the images to the user and will have the options 'Yes' and 'No' to indicate the launch status. It also has the options 'Restart' and 'Abort'.
+
+<p align="center">
+  <img src="/screenshots/example02.png" alt="example" width="300"/><br>
+  <em>SEARCHING State</em>
+</p>
+
+If the user presses abort, it will be indicated by a message and looks like the following image:
+
+<p align="center">
+  <img src="/screenshots/example03.png" alt="example" width="300"/><br>
+  <em>Abort</em>
+</p>
+
+If the user presses Restart, it restarts from the beginning as shown in the following picture
+
+<p align="center">
+  <img src="/screenshots/example04.png" alt="example" width="300"/><br>
+  <em>Abort</em>
+</p>
+
+At the end of the search process, the final result is displayed as follows
+
+<p align="center">
+  <img src="/screenshots/example05.png" alt="example" width="300"/><br>
+  <em>Abort</em>
 </p>
 
 
