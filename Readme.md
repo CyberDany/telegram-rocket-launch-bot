@@ -35,7 +35,7 @@ To install and set up RocketLaunchBot, execute the following steps:
   
 <pre><code>cd telegram-rocket-launch-bot
 python3 -m venv venv
-source venv/Scripts/activate</code></pre>
+source venv/bin/activate</code></pre>
 
   Windows:
 
@@ -48,7 +48,7 @@ python3 -m venv venv
 
 <pre><code>pip install -r requirements.txt</code></pre>
 
-4. Remember to create the .env file with the following content:
+4. Remember to create the a `.env` file at the root of the project with the following content:
 
 <pre><code>TELEGRAM_TOKEN=your_api_token_here</code></pre>
 

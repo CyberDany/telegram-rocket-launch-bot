@@ -5,9 +5,12 @@ import os
 
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, Update
 from telegram.ext import Application, CommandHandler, ContextTypes, ConversationHandler, MessageHandler, filters
+from dotenv import load_dotenv
 
 from api import VideoAPIClient
 from utils import Bisection, TelegramUtils, ImagesUtils
+
+load_dotenv()
 
 # Enviorment variables
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
