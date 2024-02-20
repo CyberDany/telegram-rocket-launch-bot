@@ -41,6 +41,7 @@ ABORT_MESSAGE = (
 )
 SHOW_IMAGE_MESSAGE = (
     "Frame: {}\n"
+    "Range: {}\n\n" 
     "The rocket is launched?"
 )
 SOLUTION_MESSAGE = (
@@ -136,7 +137,7 @@ async def show_first_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     await TelegramUtils.send_image(TELEGRAM_TOKEN, chat_id, image_path)
 
     await update.message.reply_text(
-        SHOW_IMAGE_MESSAGE.format(image_idx),
+        SHOW_IMAGE_MESSAGE.format(image_idx, images_range),
         reply_markup=markup,
     )
 
@@ -161,6 +162,10 @@ async def search_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
     if first_image_idx != last_image_idx:
         new_range, mid_frame = Bisection.update_range(user_response, images_range)
         set_current_frame(context, mid_frame)
+
+        if (new_range[0] == new_range[1]):
+            return await solution(update, context)
+
         set_range(context, new_range)
     else:
         return await solution(update, context)
@@ -175,7 +180,7 @@ async def search_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
     await TelegramUtils.send_image(TELEGRAM_TOKEN, chat_id, image_path)
 
     await update.message.reply_text(
-        SHOW_IMAGE_MESSAGE.format(current_frame),
+        SHOW_IMAGE_MESSAGE.format(current_frame, get_range(context)),
         reply_markup=markup,
     )
 
