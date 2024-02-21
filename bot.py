@@ -2,6 +2,7 @@
 
 import logging
 import os
+import asyncio
 
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, Update
 from telegram.ext import Application, CommandHandler, ContextTypes, ConversationHandler, MessageHandler, filters
@@ -49,7 +50,7 @@ SOLUTION_MESSAGE = (
     "Here you have the exact frame of the launch!! Thanks for you colaboration !!"
 )
 RESTART_MESSAGE = "Let's start from the beginning"
-
+API_ERROR_MESSAGE = "The images API is experiencing problems. Please try again later."
 
 # Enable logging
 logging.basicConfig(
@@ -128,7 +129,10 @@ async def show_first_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     image_idx = Bisection.calculate_mid_point(images_range)
     set_current_frame(context, image_idx)
     
-    frame_data = await client.get_frame(VIDEO_NAME, image_idx)
+    frame_data = await get_frame_with_retry(client, VIDEO_NAME, current_frame)
+    if frame_data is None:
+        await update.message.reply_text(API_ERROR_MESSAGE)
+        return await abort(update, context)
     
     image_path = ImagesUtils.save_image_and_get_path(chat_id, frame_data)
     set_current_frame_path(context, image_path)
@@ -171,7 +175,11 @@ async def search_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
         return await solution(update, context)
     
     current_frame = get_current_frame(context)
-    frame_data = await client.get_frame(VIDEO_NAME, current_frame)
+    
+    frame_data = await get_frame_with_retry(client, VIDEO_NAME, current_frame)
+    if frame_data is None:
+        await update.message.reply_text(API_ERROR_MESSAGE)
+        return await abort(update, context)
     
     image_path = ImagesUtils.save_image_and_get_path(chat_id, frame_data)
     set_current_frame_path(context, image_path)
@@ -188,6 +196,19 @@ async def search_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
 
     return SEARCHING
 
+async def get_frame_with_retry(client, video_name, frame_index):
+    try:
+        frame_data = await client.get_frame(video_name, frame_index)
+        return frame_data
+    except Exception as e:
+        logger.info(f"Timeout error when getting the image: {frame_index} from API. Retrying...")
+        await asyncio.sleep(1)
+        try:
+            frame_data = await client.get_frame(video_name, frame_index)
+            return frame_data
+        except Exception as e:
+            logger.info(f"Error while retrying to get the image {frame_index}: {e}")
+            return None
 
 async def solution(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """
