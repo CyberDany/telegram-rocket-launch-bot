@@ -47,7 +47,7 @@ SHOW_IMAGE_MESSAGE = (
 )
 SOLUTION_MESSAGE = (
     "Frame: {}\n"
-    "Here you have the exact frame of the launch!! Thanks for you colaboration !!"
+    "Here you have the exact frame of the launch!! Thanks for you collaboration !!"
 )
 RESTART_MESSAGE = "Let's start from the beginning"
 API_ERROR_MESSAGE = "The images API is experiencing problems. Please try again later."
