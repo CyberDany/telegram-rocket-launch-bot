@@ -129,7 +129,7 @@ async def show_first_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     image_idx = Bisection.calculate_mid_point(images_range)
     set_current_frame(context, image_idx)
     
-    frame_data = await get_frame_with_retry(client, VIDEO_NAME, current_frame)
+    frame_data = await get_frame_with_retry(client, VIDEO_NAME, image_idx)
     if frame_data is None:
         await update.message.reply_text(API_ERROR_MESSAGE)
         return await abort(update, context)
